@@ -1,0 +1,41 @@
+{% set questionClass = question.isblocked ? 'blocked' : '' %}
+
+<div class="question-container {{ questionClass }}">
+	<h2>
+		{% if detail is defined %}
+			{{ question.title }}
+		{% else %}
+			<div>{{ question.title }}
+			</div>
+
+
+		{% endif %}
+		<span class="badge badge-{{ question.isSolved ? 'success' : 'warning' }}">
+			{{ question.isSolved ? 'Résolue' : 'En attente' }}
+		</span>
+	</h2>
+
+	<p class="small-grey-text">
+		Posée par
+		<strong>{{ question.user.username }}</strong>
+		le
+		{{ question.createdAt|date("d/m/Y à h:i") }}
+		<br>
+		<i>
+			<b>{{ question.answers|length }}</b>
+			réponse(s)</i>
+	</p>
+	<a class="btn btn-warning" href="{{ path('app_faq_question_show', {'id': question.id}) }}">Répondre</a>
+</p>
+<a class="btn btn-danger" href="{{ path('app_faq_question_toggle', {'id': question.id}) }}">bloquer/debloquer</a>
+{% if detail is defined %}
+	<p>
+		{{ question.body }}
+	</p>
+{% endif %}
+
+<div class="tags">
+	{% for tag in question.tags %}
+		{% include 'faq/question/_tags.html.twig' %}
+	{% endfor %}
+</div></div>

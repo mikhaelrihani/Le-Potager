@@ -20,13 +20,13 @@ class Favorite
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="favorites")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="favorites", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="favorites")
+     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="favorites", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"usersWithRelations"})
      */

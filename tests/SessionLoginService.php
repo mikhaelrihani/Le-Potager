@@ -55,7 +55,7 @@ trait SessionLoginService
                 'password' => $password,
             ])
         );
-
+     
         $data = json_decode($client->getResponse()->getContent());
 
         $JWT = $data->token;

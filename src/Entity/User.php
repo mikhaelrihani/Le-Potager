@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank
      * @Assert\Email
-    * @EmailDomain(blocked={"badDomain.fr"})
+     * @EmailDomain(blocked={"badDomain.fr"})
      * @Assert\Length(max=255)
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
@@ -86,22 +86,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Garden::class, mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Garden::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      * @Groups({"usersWithRelations"})
      */
     private $gardens;
 
     /**
-     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true,cascade={"persist"})
+     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      * @Groups({"usersWithRelations"})
      */
     private $favorites;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="user", cascade={"persist","remove"})
+     * @Groups({"usersWithRelations"})
+     */
+    private $questions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     * @Groups({"usersWithRelations"})
+     */
+    private $answers;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->gardens = new ArrayCollection();
         $this->favorites = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -291,7 +305,72 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * Get the questions associated with this user.
+     *
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
 
+    /**
+     * Add a question to the user.
+     *
+     * @param Question $question
+     */
+    public function addQuestion(Question $question): void
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setUser($this);
+        }
+    }
+
+    /**
+     * Remove a question from the user.
+     *
+     * @param Question $question
+     */
+    public function removeQuestion(Question $question): void
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+
+            // Remove the association from the question as well
+            $question->setUser(null);
+        }
+    }
+  /**
+     * @return Collection|Answer[]
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers[] = $answer;
+            $answer->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getUser() === $this) {
+                $answer->setUser(null);
+            }
+        }
+
+        return $this;
+    }
     /**
      * Returning a salt is only needed, if you are not using a modern
      * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.

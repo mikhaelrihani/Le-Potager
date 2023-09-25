@@ -54,21 +54,21 @@ class Question
     private $isBlocked;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="questions", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="questions",  cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"questionsWithRelations"})
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Answer", mappedBy="question", orphanRemoval=true,cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", orphanRemoval=true,cascade={"persist", "remove"})
      * @ORM\OrderBy({"isValidated" = "DESC", "createdAt" = "ASC"})
      * @Groups({"questionsWithRelations"})
      */
     private $answers;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Tag", inversedBy="questions", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="questions", cascade={"persist"})
      * @Groups({"questionsWithRelations"})
      */
     private $tags;

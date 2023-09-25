@@ -125,20 +125,20 @@ class Garden
     private $state;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="garden", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="garden", cascade={"persist", "remove"})
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $pictures;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="gardens", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="gardens", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"gardensWithRelations"})
      */
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="garden", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="garden", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $favorites;
 

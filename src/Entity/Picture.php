@@ -41,7 +41,7 @@ class Picture
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures")
+     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures", cascade={"persist","remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $garden;
@@ -92,7 +92,14 @@ class Picture
 
         return $this;
     }
-
+    public function removeGarden(): void
+    {
+        if ($this->garden !== null) {
+            $this->garden->removePicture($this);
+            $this->garden = null;
+        }
+    }
+    
     public function getUrl(): ?string
     {
         return $this->url;

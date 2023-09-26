@@ -32,11 +32,13 @@ $routes = [
         ],
 
         'DELETE' => [
+          
+            "app_api_user_deleteFavoriteById",
             "app_api_user_deleteFavorites",
             "app_api_garden_deletePictureFromRegisteredGarden",
-            "app_api_user_deleteFavoriteById",
-            "app_api_garden_deleteGardenById",
             "app_api_user_deleteUser",
+            "app_api_garden_deleteGardenById",
+            
         ],
     ],
 

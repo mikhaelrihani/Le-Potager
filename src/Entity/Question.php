@@ -54,7 +54,7 @@ class Question
     private $isBlocked;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="questions", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="questions", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"questionsWithRelations"})
      */

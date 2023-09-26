@@ -15,6 +15,7 @@ trait SessionLoginService
         // on cree une session pour simuler un utilisateur connecté
         $session = $client->getContainer()->get("session");
         // on crée un objet UsernamePasswordToken qui représente l'authentification de l'utilisateur.
+        
         $token = new UsernamePasswordToken($user, "main", $user->getRoles());
         $session->set("_security_main", serialize($token));
         $session->save();
@@ -30,7 +31,9 @@ trait SessionLoginService
     {
         // on cree une session pour simuler un utilisateur connecté
         $session = $client->getContainer()->get("session");
+        
         $JWT = $this->getJWT($client, 'admin', 'admin');
+        
         $session->set("_security_main", serialize($JWT));
         $session->save();
 

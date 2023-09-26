@@ -234,9 +234,9 @@ class GardenController extends AbstractController
         // we check if the picture already exists in the garden
         $pictures = $garden->getPictures();
         foreach ($pictures as $picture) {
-           if ($picture->getUrl() == $newPicture->getUrl()) {
-               return $this->json(["error" => "L'image existe déjà"], Response::HTTP_BAD_REQUEST);
-           }
+            if ($picture->getUrl() == $newPicture->getUrl()) {
+                return $this->json(["error" => "L'image existe déjà"], Response::HTTP_BAD_REQUEST);
+            }
         }
         // we check if the picture is valid
         $dataErrors = $this->validatorError->returnErrors($garden);
@@ -290,10 +290,16 @@ class GardenController extends AbstractController
      * @param PictureRepository $pictureRepository
      * @return JsonResponse
      */
-    public function getPictureByGarden(int $id, PictureRepository $pictureRepository): JsonResponse
+    public function getPictureByGarden(int $id, PictureRepository $pictureRepository, GardenRepository $gardenRepository): JsonResponse
     {
         $pictures = $pictureRepository->findBy(['garden' => $id]);
-
+        $garden = $gardenRepository->find($id);
+        if(!$garden) {
+            return $this->json("Le jardin n'existe pas", Response::HTTP_BAD_REQUEST);
+        }
+        if (!$pictures) {
+            return $this->json("Le jardin n'a pas d'images", Response::HTTP_BAD_REQUEST);
+        }
         return $this->json($pictures, Response::HTTP_OK, [], ['groups' => 'picturesGarden']);
     }
 }

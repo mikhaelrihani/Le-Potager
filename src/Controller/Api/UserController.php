@@ -264,7 +264,7 @@ class UserController extends AbstractController
     /**
      * @Route("/favorites/{id}", name="app_api_user_deleteFavoriteById", methods={"DELETE"})
      * Delete one favorite of a user
-     * @param integer $id user id
+     * @param integer $id favorite id
      */
     public function deleteFavoriteById(int $id, FavoriteRepository $favoriteRepository, EntityManagerInterface $em): JsonResponse
     {

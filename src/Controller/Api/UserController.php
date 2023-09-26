@@ -103,9 +103,13 @@ class UserController extends AbstractController
         $entityManager->flush();
 
         // Return json with datas of new user 
-        return $this->json([$user], Response::HTTP_CREATED, [
-            "Location" => $this->generateUrl("app_api_user_getUsersById", ["id" => $user->getId()])
-        ], [
+        return $this->json(
+            [$user],
+            Response::HTTP_CREATED,
+            [
+                "Location" => $this->generateUrl("app_api_user_getUsersById", ["id" => $user->getId()])
+            ],
+            [
                 "groups" => "usersWithRelations"
             ]
         );
@@ -218,12 +222,12 @@ class UserController extends AbstractController
 
     public function postFavorite(UserRepository $userRepository, GardenRepository $gardenRepository, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager): JsonResponse
     {
-        // Retrieve the id from the request body
-        $id = $request->query->get('id');
+        // Retrieve the userId from the request body
+        $userId = $request->query->get('userId');
         // Find user or return error
-        $user = $userRepository->find($id);
+        $user = $userRepository->find($userId);
         if (!$user) {
-            return $this->json(["error" => "The user with ID " . $id . " does not exist"], Response::HTTP_BAD_REQUEST);
+            return $this->json(["error" => "The user with ID " . $userId . " does not exist"], Response::HTTP_BAD_REQUEST);
         }
 
         // Retrieve the gardenId from the request body
@@ -233,7 +237,13 @@ class UserController extends AbstractController
         if (!$garden) {
             return $this->json(["error" => "The garden with ID " . $gardenId . " does not exist"], Response::HTTP_BAD_REQUEST);
         }
-
+        // we check if the garden is already in the favorites of the user
+        $favorites = $user->getFavorites();
+        foreach ($favorites as $favorite) {
+            if ($favorite->getGarden() === $garden) {
+                return $this->json(["error" => "The garden with ID " . $gardenId . " is already in the favorites of the user with ID " . $userId . ""], Response::HTTP_BAD_REQUEST);
+            }
+        }
         // Creating a new Favorite object instance
         $favorite = new Favorite();
         // Setting the associated garden for the favorite
@@ -243,12 +253,8 @@ class UserController extends AbstractController
         // Save changes into database
         $entityManager->persist($user);
         $entityManager->flush();
-
-        return $this->json([$user], Response::HTTP_CREATED, [
-            "Location" => $this->generateUrl("app_api_user_getUsersById", ["id" => $user->getId()])
-        ], [
-                "groups" => "users"
-            ]);
+        // we return all the favorites of the user
+        return $this->json($favorites, Response::HTTP_OK, [], ["groups" => "usersWithRelations"]);
     }
 
 
@@ -349,7 +355,7 @@ class UserController extends AbstractController
         Request $request,
         SerializerInterface $serializer
     ): JsonResponse {
-        
+
         // retrieve credentials sent by user
         $jsonContent = $request->getContent();
         $credentials = $serializer->deserialize($jsonContent, User::class, 'json');

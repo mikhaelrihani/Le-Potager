@@ -294,6 +294,7 @@ class GardenController extends AbstractController
     {
         $pictures = $pictureRepository->findBy(['garden' => $id]);
         $garden = $gardenRepository->find($id);
+        
         if(!$garden) {
             return $this->json("Le jardin n'existe pas", Response::HTTP_BAD_REQUEST);
         }

@@ -99,6 +99,7 @@ class GardenController extends AbstractController
 
             // envoi d'un email apres moderation par la validation de l'edit
             $to = $garden->getUser()->getEmail();
+            
 
             $mailer->send("validation de votre jardin", "emails/moderation.html.twig",["garden" => $garden] , $to);
             $this->addFlash("success", "Un email avertissant de l'acceptation du jardin par nos moderateur a bien été envoyé.");

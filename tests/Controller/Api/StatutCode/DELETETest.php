@@ -20,14 +20,18 @@ class DELETETest extends WebTestCase
         $router = $client->getContainer()->get('router');
 
         foreach ($routes["routesApi"][$method] as $routeName) {
-
+           
             $client->request($method, $router->generate($routeName, ["id" => $id, "gardenId" =>$gardenId ]));
             $response = $client->getResponse();
-
+        
             $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
             $this->assertNotEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), 'La route ' . $routeName . ' génère une erreur 401 Unauthorized.');
             $this->assertFalse($response->isServerError(), 'La route ' . $routeName . ' génère une exception Symfony (500 Internal Server Error).');
             $this->assertJson($response->getContent(), 'La réponse de la route ' . $routeName . ' n\'est pas au format JSON valide.');
         }
     }
+
+ 
+    
+
 }

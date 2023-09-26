@@ -1,15 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Backoffice | Utilisateur{% endblock %}
+{% block title %}Backoffice | Utilisateur
+{% endblock %}
 
-{% block userActive %}active{% endblock %}
+{% block userActive %}active
+{% endblock %}
 
 {% block body %}
 
 	<h3>Utilisateur</h3>
 
 	<div class="row">
-		
+
 		<div class="col-9">
 
 			<table class="table my-3">
@@ -49,7 +51,7 @@
 					</tr>
 					<tr>
 						<th>Avatar :</th>
-						<td >
+						<td>
 							{% if user.avatar %}
 								<img src='{{ user.avatar }}' alt='Avatar de {{ user.username }}' style='width:80px'>
 							{% endif %}
@@ -60,20 +62,37 @@
 						<td>{{ user.createdAt ? user.createdAt|date('Y-m-d H:i:s') : '' }}</td>
 					</tr>
 					<tr>
-						<th>Modifié le: </th>
+						<th>Modifié le:
+						</th>
 						<td>{{ user.updatedAt ? user.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
 					</tr>
+					<tr>
+						<th>Liste des jardins :</th>
+						<td>
+							{% for garden in user.gardens %}
+								<a href="{{ path('app_back_garden_show', {'id': garden.id}) }}" style="margin-right: 5px; text-decoration: none;">
+									<button type="button" class="btn btn-success btn-sm">{{ garden.id }}</button>
+								</a>
+							{% endfor %}
+						</td>
+					</tr>
+
+
 				</tbody>
 			</table>
 
 		</div>
 
 		<div class="btn-group col-3 d-flex flex-column gap-2 align-items-end row my-3 px-5" role="group" aria-label="Basic example">
-			<a href="{{ path('app_back_user_list') }}"><button type="button" class="btn btn-primary col-12">Retour à la liste</button></a>
-			<a href="{{ path('app_back_user_edit', {'id': user.id}) }}"><button type="button" class="btn btn-secondary col-12">Modifier</button></a>
+			<a href="{{ path('app_back_user_list') }}">
+				<button type="button" class="btn btn-primary col-12">Retour à la liste</button>
+			</a>
+			<a href="{{ path('app_back_user_edit', {'id': user.id}) }}">
+				<button type="button" class="btn btn-secondary col-12">Modifier</button>
+			</a>
 			{{ include('back/user/_delete_form.html.twig') }}
 		</div>
-	
+
 	</div>
 
 

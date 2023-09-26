@@ -244,8 +244,8 @@ class GardenController extends AbstractController
             return $this->json($dataErrors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
         // we add the picture to the garden
-        $picture->setGarden($garden);
-        $em->persist($picture);
+        $newPicture->setGarden($garden);
+        $em->persist($newPicture);
         $em->flush();
 
         return $this->json(

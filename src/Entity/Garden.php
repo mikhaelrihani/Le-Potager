@@ -125,8 +125,9 @@ class Garden
     private $state;
 
     /**
-     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="garden", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="garden", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"gardensWithRelations","usersWithRelations"})
+    
      */
     private $pictures;
 
@@ -138,7 +139,7 @@ class Garden
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="garden", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="garden", cascade={"persist"}, orphanRemoval=true)
      */
     private $favorites;
 

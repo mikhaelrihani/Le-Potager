@@ -47,13 +47,13 @@ class Answer
     private $isBlocked;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers",cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="answers",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;

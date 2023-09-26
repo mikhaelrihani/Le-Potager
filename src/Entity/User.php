@@ -86,25 +86,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Garden::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Garden::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      * @Groups({"usersWithRelations"})
      */
     private $gardens;
 
     /**
-     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Favorite::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      * @Groups({"usersWithRelations"})
      */
     private $favorites;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="user", cascade={"persist","remove"})
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="user", cascade={"persist"})
      * @Groups({"usersWithRelations"})
      */
     private $questions;
 
     /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="user", orphanRemoval=true, cascade={"persist"})
      * @Groups({"usersWithRelations"})
      */
     private $answers;

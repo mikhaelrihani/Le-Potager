@@ -61,7 +61,7 @@ class Question
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", orphanRemoval=true,cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", orphanRemoval=true,cascade={"persist"})
      * @ORM\OrderBy({"isValidated" = "DESC", "createdAt" = "ASC"})
      * @Groups({"questionsWithRelations"})
      */

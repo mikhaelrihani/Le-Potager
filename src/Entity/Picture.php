@@ -6,7 +6,6 @@ use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
-
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
  */
@@ -41,7 +40,7 @@ class Picture
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures", cascade={"persist","remove"})
+     * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $garden;
@@ -99,7 +98,7 @@ class Picture
             $this->garden = null;
         }
     }
-    
+
     public function getUrl(): ?string
     {
         return $this->url;

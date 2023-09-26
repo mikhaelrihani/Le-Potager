@@ -19,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
+
 /**
  * @Route("/api/gardens")
  */
@@ -170,18 +171,7 @@ class GardenController extends AbstractController
 
         $jsonContent = $request->getContent();
 
-        $updatedGarden = $serializer->deserialize($jsonContent, Garden::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $garden]);
-
-        $coordinatesCityApi = $this->nominatimApi->getCoordinates($garden->getCity(), $garden->getAddress());
-
-        if ($coordinatesCityApi == false) {
-            return $this->json(['error' => "L'adresse est introuvable"], Response::HTTP_BAD_REQUEST);
-        }
-        ;
-
-        $garden->setLat($coordinatesCityApi[ 'lat' ]);
-        $garden->setLon($coordinatesCityApi[ 'lon' ]);
-
+        $serializer->deserialize($jsonContent, Garden::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $garden]);
 
         $garden->setUpdatedAt(new DateTimeImmutable());
 
@@ -191,10 +181,10 @@ class GardenController extends AbstractController
             return $this->json($dataErrors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $em->persist($updatedGarden);
+        $em->persist($garden);
         $em->flush();
 
-        return $this->json($updatedGarden, Response::HTTP_OK, [], ["groups" => "gardensWithRelations"]);
+        return $this->json($garden, Response::HTTP_OK, [], ["groups" => "gardensWithRelations"]);
     }
 
 
@@ -239,15 +229,23 @@ class GardenController extends AbstractController
 
         $jsonContent = $request->getContent();
 
-        $picture = $serializer->deserialize($jsonContent, Picture::class, 'json');
+        $newPicture = $serializer->deserialize($jsonContent, Picture::class, 'json');
 
+        // we check if the picture already exists in the garden
+        $pictures = $garden->getPictures();
+        foreach ($pictures as $picture) {
+            if ($picture->getUrl() == $newPicture->getUrl()) {
+                return $this->json(["error" => "L'image existe déjà"], Response::HTTP_BAD_REQUEST);
+            }
+        }
+        // we check if the picture is valid
         $dataErrors = $this->validatorError->returnErrors($garden);
-
         if ($dataErrors) {
             return $this->json($dataErrors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        $picture->setGarden($garden);
-        $em->persist($picture);
+        // we add the picture to the garden
+        $newPicture->setGarden($garden);
+        $em->persist($newPicture);
         $em->flush();
 
         return $this->json(
@@ -292,10 +290,17 @@ class GardenController extends AbstractController
      * @param PictureRepository $pictureRepository
      * @return JsonResponse
      */
-    public function getPictureByGarden(int $id, PictureRepository $pictureRepository): JsonResponse
+    public function getPictureByGarden(int $id, PictureRepository $pictureRepository, GardenRepository $gardenRepository): JsonResponse
     {
         $pictures = $pictureRepository->findBy(['garden' => $id]);
-
+        $garden = $gardenRepository->find($id);
+        
+        if(!$garden) {
+            return $this->json("Le jardin n'existe pas", Response::HTTP_BAD_REQUEST);
+        }
+        if (!$pictures) {
+            return $this->json("Le jardin n'a pas d'images", Response::HTTP_BAD_REQUEST);
+        }
         return $this->json($pictures, Response::HTTP_OK, [], ['groups' => 'picturesGarden']);
     }
 }

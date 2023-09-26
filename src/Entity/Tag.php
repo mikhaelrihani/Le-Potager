@@ -28,7 +28,7 @@ class Tag
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Question", mappedBy="tags",cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Question", mappedBy="tags",cascade={"persist"})
      */
     private $questions;
 

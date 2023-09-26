@@ -127,11 +127,12 @@ class Garden
     /**
      * @ORM\OneToMany(targetEntity=Picture::class, mappedBy="garden", cascade={"persist"}, orphanRemoval=true)
      * @Groups({"gardensWithRelations","usersWithRelations"})
+    
      */
     private $pictures;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="gardens", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="gardens", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"gardensWithRelations"})
      */

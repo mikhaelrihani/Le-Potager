@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 # config/routes.yaml
 api_login_check:
     path: /api/login_check
+=======
+# config/routes.yaml
+api_login_check:
+    path: /api/login_check
+>>>>>>> 8f1c19c3377b51069f02aeaf5ca90b377b493c27

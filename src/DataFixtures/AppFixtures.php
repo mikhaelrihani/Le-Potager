@@ -204,7 +204,7 @@ class AppFixtures extends Fixture
         }
 
         // ! Picture
-        for ($i = 0; $i < 0; $i++) {
+        for ($i = 0; $i < 24; $i++) {
             // J'instancie un nouvel objet picture
 
             $picture = new Picture();

@@ -96,7 +96,6 @@ class UserController extends AbstractController
         if ($dataErrors) {
             return $this->json($dataErrors, Response::HTTP_UNPROCESSABLE_ENTITY);
         }
-        ;
 
         // Post user and save changes into database
         $entityManager->persist($user);

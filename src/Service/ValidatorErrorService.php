@@ -12,24 +12,25 @@ class ValidatorErrorService
     {
         $this->validator = $validator;
     }
-    
+
     /**
      * Validate entity or return errors messages
      *
      */
-    public function returnErrors ($entity) {
-        
+    public function returnErrors($entity)
+    {
+
         $errors = $this->validator->validate($entity);
 
         if (count($errors) > 0) {
-            
-            $errors = [];
-            
+
+            $errorsList = [];
+
             foreach ($errors as $error) {
-                $errors[$error->getPropertyPath()][] = $error->getMessage();
+                $errorsList[$error->getPropertyPath()][] = $error->getMessage();
             }
-            
-            return $errors;
+
+            return $errorsList;
         }
     }
 }

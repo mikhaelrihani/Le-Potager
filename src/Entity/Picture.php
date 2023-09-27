@@ -6,6 +6,7 @@ use App\Repository\PictureRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Validator\ContainsHtmlCharacters;
 /**
  * @ORM\Entity(repositoryClass=PictureRepository::class)
  */

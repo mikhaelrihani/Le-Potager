@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\ContainsHtmlCharacters;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AnswerRepository")
@@ -23,6 +24,7 @@ class Answer
      * @ORM\Column(type="text")
      * @Assert\NotBlank()
      * @Groups({"questionsWithRelations"})
+     * @ContainsHtmlCharacters
      */
     private $body;
 

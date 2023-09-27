@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
-
+use App\Validator\ContainsHtmlCharacters;
 /**
  * @ORM\Entity(repositoryClass=GardenRepository::class)
  */
@@ -26,6 +26,7 @@ class Garden
      * @ORM\Column(type="string", length=128)
      * @Assert\NotBlank
      * @Assert\Length(max=128)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $title;
@@ -34,6 +35,7 @@ class Garden
      * @ORM\Column(type="string", length=1000)
      * @Assert\NotBlank
      * @Assert\Length(max=1000)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $description;
@@ -42,6 +44,7 @@ class Garden
      * @ORM\Column(type="string", length=240)
      * @Assert\NotBlank
      * @Assert\Length(max=240)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $address;
@@ -49,6 +52,7 @@ class Garden
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $postalCode;
@@ -57,6 +61,7 @@ class Garden
      * @ORM\Column(type="string", length=128)
      * @Assert\NotBlank
      * @Assert\Length(max=128)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $city;
@@ -120,6 +125,7 @@ class Garden
      * @ORM\Column(type="string", length=128)
      * @Assert\NotBlank
      * @Assert\Length(max=128)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $state;

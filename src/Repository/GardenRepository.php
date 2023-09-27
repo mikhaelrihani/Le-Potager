@@ -92,8 +92,7 @@ class GardenRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('g')
             ->innerJoin('g.user', 'u')
-            ->where("g.id LIKE :search")
-            ->orWhere("u.username LIKE :search")
+            ->where("g.id = :search OR u.username LIKE :search")
             ->setParameter("search", "$search")
             ->getQuery()
             ->getResult();

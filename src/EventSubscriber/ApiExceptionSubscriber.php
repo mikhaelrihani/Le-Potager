@@ -15,18 +15,18 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
     {
         $request = $event->getRequest();
 
-        // Check if the request path starts with /api/
+        // Check if the request path starts with /api/ and generate a json response instead of the default html error page if it starts with /api/
         if (strpos($request->getPathInfo(), "/api/") !== 0) {
             return;
         }
-        // allow nominatimApi request usage in garden controller to manage his own exception json response  
+        // Check if the request path starts with /api/garden/search to allow nominatimApi to manage his own exception json response  
         if (strpos($request->getPathInfo(), "/api/garden/search") === 0) {
             return;
         }
 
         $exception = $event->getThrowable();
 
-        // Handle HttpException
+        // Handle HttpException only (for example when validation fails)
         if ($exception instanceof HttpException) {
             $response = new JsonResponse(
                 ["error" => $exception->getMessage()],

@@ -11,6 +11,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use App\Validator\EmailDomain;
+use App\Validator\ContainsHtmlCharacters;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -24,11 +25,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $id;
+  
 
     /**
      * @ORM\Column(type="string", length=64, unique=true)
      * @Assert\NotBlank
      * @Assert\Length(max=64)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $username;
@@ -55,6 +58,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=64, nullable=true)
      * @Assert\NotBlank
      * @Assert\Length(max=64)
+     * @ContainsHtmlCharacters
      * @Groups({"gardensWithRelations","usersWithRelations"})
      */
     private $phone;

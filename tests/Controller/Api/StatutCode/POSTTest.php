@@ -21,7 +21,7 @@ class POSTTest extends WebTestCase
 
         $client->request(
             'POST',
-            $router->generate($routeName, ["gardenId" => $gardenId, "id" => $id]),
+            $router->generate($routeName, ["gardenId" => $gardenId, "id" => $id,"userId" => $userId]),
             [],
             [],
             [],

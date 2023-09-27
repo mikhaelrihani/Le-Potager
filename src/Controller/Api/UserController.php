@@ -165,7 +165,7 @@ class UserController extends AbstractController
      * Delete one user
      * @param integer $id user id
      */
-    public function deleteUser(int $id, UserRepository $userRepository, EntityManagerInterface $em): JsonResponse
+    public function deleteUser(int $id, UserRepository $userRepository): JsonResponse
     {
         // Find user or return error
         $user = $userRepository->find($id);
@@ -175,12 +175,13 @@ class UserController extends AbstractController
 
         // Remove user and save changes into database or return error
         try {
-            $em->remove($user);
-            $em->flush();
+            $userRepository->remove($user, true);
+
         } catch (ORMInvalidArgumentException $e) {
+
             return $this->json(["error" => "Failed to delete the user with ID " . $id . ""], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
-        // return json with success custom message
+        //return json with success custom message
         return $this->json("The user with ID " . $id . " has been deleted successfully", Response::HTTP_OK);
     }
 
@@ -222,7 +223,8 @@ class UserController extends AbstractController
     public function postFavorite(UserRepository $userRepository, GardenRepository $gardenRepository, Request $request, SerializerInterface $serializer, ValidatorInterface $validator, EntityManagerInterface $entityManager): JsonResponse
     {
         // Retrieve the userId from the request body
-        $userId = $request->query->get('userId');
+        $userId = $request->get('userId');
+
         // Find user or return error
         $user = $userRepository->find($userId);
         if (!$user) {
@@ -267,6 +269,7 @@ class UserController extends AbstractController
      */
     public function deleteFavoriteById(int $id, FavoriteRepository $favoriteRepository, EntityManagerInterface $em): JsonResponse
     {
+        
         // Find favorite or return error
         $favorite = $favoriteRepository->find($id);
         if (!$favorite) {

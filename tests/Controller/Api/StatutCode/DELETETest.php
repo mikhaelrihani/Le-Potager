@@ -19,11 +19,11 @@ class DELETETest extends WebTestCase
         $client = $this->createAuthenticatedClient();
         $router = $client->getContainer()->get('router');
 
-        foreach ($routes["routesApi"][$method] as $routeName) {
-           
-            $client->request($method, $router->generate($routeName, ["id" => $id, "gardenId" =>$gardenId ]));
+        foreach ($routes[ "routesApi" ][$method] as $routeName) {
+
+            $client->request($method, $router->generate($routeName, ["id" => $id, "gardenId" => $gardenId]));
             $response = $client->getResponse();
-        
+          
             $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
             $this->assertNotEquals(Response::HTTP_UNAUTHORIZED, $response->getStatusCode(), 'La route ' . $routeName . ' génère une erreur 401 Unauthorized.');
             $this->assertFalse($response->isServerError(), 'La route ' . $routeName . ' génère une exception Symfony (500 Internal Server Error).');
@@ -31,7 +31,7 @@ class DELETETest extends WebTestCase
         }
     }
 
- 
-    
+
+
 
 }

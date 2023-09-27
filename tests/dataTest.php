@@ -3,6 +3,7 @@
 $id = 1;
 $city = "annecy";
 $dist = 100;
+$userId = 1;
 $gardenId = 1;
 
 $routes = [
@@ -36,9 +37,8 @@ $routes = [
             "app_api_user_deleteFavoriteById",
             "app_api_user_deleteFavorites",
             "app_api_garden_deletePictureFromRegisteredGarden",
-            "app_api_user_deleteUser",
             "app_api_garden_deleteGardenById",
-            
+            "app_api_user_deleteUser",
         ],
     ],
 

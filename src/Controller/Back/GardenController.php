@@ -40,10 +40,16 @@ class GardenController extends AbstractController
      * @param GardenRepository $gardenRepository
      * @return Response
      */
-    public function list(GardenRepository $gardenRepository): Response
+    public function list(GardenRepository $gardenRepository, Request $request): Response
     {
+        $search = $request->get('search');
+        if ($search) {
+            $gardens = $gardenRepository->findGardenByIdSearch($search);
+        } else {
+            $gardens = $gardenRepository->findAll();
+        }
         return $this->render('back/garden/list.html.twig', [
-            'gardens' => $gardenRepository->findAll(),
+            'gardens' => $gardens,
         ]);
     }
 
@@ -74,7 +80,7 @@ class GardenController extends AbstractController
      */
     public function edit(Request $request, Garden $garden, GardenRepository $gardenRepository, MyMailerService $mailer): Response
     {
-     
+
         $form = $this->createForm(GardenType::class, $garden);
         $form->handleRequest($request);
 
@@ -99,12 +105,12 @@ class GardenController extends AbstractController
 
             // envoi d'un email apres moderation par la validation de l'edit
             $to = $garden->getUser()->getEmail();
-            
 
-            $mailer->send("validation de votre jardin", "emails/moderation.html.twig",["garden" => $garden] , $to);
+
+            $mailer->send("validation de votre jardin", "emails/moderation.html.twig", ["garden" => $garden], $to);
             $this->addFlash("success", "Un email avertissant de l'acceptation du jardin par nos moderateur a bien été envoyé.");
 
-            return $this->redirectToRoute('app_back_garden_list',[], Response::HTTP_FOUND);
+            return $this->redirectToRoute('app_back_garden_list', [], Response::HTTP_FOUND);
         }
 
         return $this->renderForm('back/garden/edit.html.twig', [
@@ -145,13 +151,13 @@ class GardenController extends AbstractController
      */
     public function deletePicture(Request $request, Picture $picture, PictureRepository $pictureRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$picture->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $picture->getId(), $request->request->get('_token'))) {
             $pictureRepository->remove($picture, true);
         }
         $this->addFlash("success", "La photo a bien été supprimée.");
-        
+
         $referer = $request->headers->get("referer");
-        
+
         return $this->redirect($referer);
     }
 }

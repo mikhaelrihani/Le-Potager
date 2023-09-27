@@ -9,26 +9,19 @@
 {% block body %}
 
 	<div class="d-flex justify-content-between mb-2">
-		<h3 class="mb-0">Liste des jardins</h3>
-		<form class="d-flex">
-			<input type="search" id="search-input" placeholder="Rechercher par Id" class="form-control me-sm-2">
+		<a href="{{path('app_back_garden_list')}}" style="text-decoration: none;">
+			<h3 class="mb-0">Liste des jardins</h3>
+		</a>
+		<form class="d-flex" action="{{path('app_back_garden_list')}}">
+			<input type="search" id="search-input" placeholder="Rechercher..." class="form-control me-sm-2" name="search" style="color:#4EBB86;">
 			<div class="input-group-append">
-				<button class="btn btn-outline-primary my-2 my-sm-0" type="button" id="search-button">Rechercher</button>
+				<button class="btn btn-outline-danger" type="submit">
+					<i class="bi bi-search"></i>
+				</button>
 			</div>
 		</form>
 	</div>
-
-
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-            const searchInput = document.querySelector('#search-input');
-            const searchButton = document.querySelector('#search-button');
-            searchButton.addEventListener('click', function () {
-                window.location.href = searchInput.value;
-            });
-        });
-	</script>
-
+	
 
 	<table class="table table-hover my-3">
 

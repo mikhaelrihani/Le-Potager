@@ -56,15 +56,7 @@ class GardenRepository extends ServiceEntityRepository
         ;
     }
 
-//    public function findOneBySomeField($value): ?Garden
-//    {
-//        return $this->createQueryBuilder('g')
-//            ->andWhere('g.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
     /**
      * method for recovering gardens in relation to a town and its distance
      *
@@ -80,7 +72,7 @@ class GardenRepository extends ServiceEntityRepository
         $conn = $this->getEntityManager()->getConnection();
 
         $sql = '
-            SELECT garden.*, user.username, user.email, user.phone, user.avatar,' . $formule .' AS dist
+            SELECT garden.*, user.username, user.email, user.phone, user.avatar,' . $formule . ' AS dist
             FROM garden
             INNER JOIN user ON garden.user_id = user.id
             WHERE ' . $formule . '<= :distance 
@@ -90,5 +82,20 @@ class GardenRepository extends ServiceEntityRepository
         $resultSet = $conn->executeQuery($sql, ['distance' => $distance]);
 
         return $resultSet->fetchAllAssociative();
+    }
+
+    /** 
+     * method to find a garden by its id
+     * @param string $search
+     */
+    public function findGardenByIdSearch(?string $search = null): ?array
+    {
+        return $this->createQueryBuilder('g')
+            ->innerJoin('g.user', 'u')
+            ->where("g.id LIKE :search")
+            ->orWhere("u.username LIKE :search")
+            ->setParameter("search", "$search")
+            ->getQuery()
+            ->getResult();
     }
 }

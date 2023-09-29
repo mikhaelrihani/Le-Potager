@@ -139,7 +139,7 @@ class Garden
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="gardens", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      * @Groups({"gardensWithRelations"})
      */
     private $user;

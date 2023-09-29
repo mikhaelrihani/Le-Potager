@@ -50,13 +50,13 @@ class Answer
 
     /**
      * @ORM\ManyToOne(targetEntity="Question", inversedBy="answers", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE" )
      */
     private $question;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="answers",cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $user;
 

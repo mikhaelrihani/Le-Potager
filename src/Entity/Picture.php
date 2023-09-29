@@ -42,7 +42,7 @@ class Picture
 
     /**
      * @ORM\ManyToOne(targetEntity=Garden::class, inversedBy="pictures", cascade={"persist"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
     private $garden;
 
